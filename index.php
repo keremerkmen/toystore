@@ -33,6 +33,7 @@
 	/*
 	 * TO-DO: Retrieve info for ALL remaining toys from the db
 	 */
+	$remainingToys = pdo($pdo, "SELECT * FROM toy WHERE toynum != :id;", ['id' => '0001'])->fetchAll();
 
 
 // Closing PHP tag  ?> 
@@ -95,6 +96,16 @@
   				<!-- 
 				  -- TO DO: Fill in the rest of the cards for ALL remaining toys from the db
   				  -->
+				<?php foreach ($remainingToys as $toy): ?>
+					<div class="toy-card">
+						<a href="toy.php?toynum=<?= $toy['toynum'] ?>">
+							<img src="<?= $toy['imgSrc'] ?>" alt="<?= $toy['name'] ?>">
+						</a>
+						<h2><?= $toy['name'] ?></h2>
+						<p>$<?= $toy['price'] ?></p>
+					</div>
+				<?php endforeach; ?>
+				
 
   				<div class="toy-card">
   					<a href="toy.php?toynum=<?= '' ?>">
