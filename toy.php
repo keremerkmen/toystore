@@ -17,17 +17,22 @@
 	 		  Retrieve info about toy from the db using provided PDO connection
 	 */
 	function get_toy_details(PDO $pdo, string $id) {
-        $sql = "SELECT toy.*, 
-                       manufacturer.name AS manufacturer_name,
-                       manufacturer.address AS manufacturer_address,
-                       manufacturer.phone AS manufacturer_phone,
-                       manufacturer.contact AS manufacturer_contact
-                FROM toy
-                JOIN manufacturer ON toy.manufacturer_id = manufacturer.id
-                WHERE toy.toynum = :id;";
-        return pdo($pdo, $sql, ['id' => $id])->fetch();
-    }
-
+		$sql = "SELECT toy.*, 
+				toy.agerange AS age_range,
+				toy.numinstock AS stock,
+				manuf.name AS manufacturer_name,
+				manuf.Street AS manufacturer_street,
+				manuf.City AS manufacturer_city,
+				manuf.State AS manufacturer_state,
+				manuf.ZipCode AS manufacturer_zipcode,
+				manuf.phone AS manufacturer_phone,
+				manuf.contact AS manufacturer_contact,
+				CONCAT(manuf.Street, ', ', manuf.City, ', ', manuf.State, ' ', manuf.ZipCode) AS manufacturer_address
+				FROM toy
+				JOIN manuf ON toy.manid = manuf.manid
+				WHERE toy.toynum = :id;";
+		return pdo($pdo, $sql, ['id' => $id])->fetch();
+	}
     // Retrieve info about toy from the db using provided PDO connection
     $toy = get_toy_details($pdo, $toy_id);
 
